@@ -19,5 +19,5 @@
 
 		$result = $sth->fetchAll();	 // memorizzo il risultato della query in un array
 
-		echo json_encode($result, JSON_PRETTY_PRINT);	//stampo il json del risultato della query
+		echo json_encode($result, JSON_PRETTY_PRINT);	//stampo il json del risultato della query formattato
 ?>
