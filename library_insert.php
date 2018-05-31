@@ -10,9 +10,7 @@
 	<?php
 		include ("library_class.php");
 		$titolo = addslashes((string)$_POST['titolo']);
-		//echo "<br/>".$titolo;
 		$category = (int)$_POST['category'];
-		//echo "<br/>" .$category;
 		$libro = new libro_DBlibrary();
 		$libro->setTitle($titolo);
 		$libro->setCategory($category);
