@@ -1,46 +1,14 @@
 <?php
 		header('Content-Type: application/json');
-			
-		class connessione
-		{
-			private $dbname;
-			private $pwd;
-			private $user;
-			private $host;
-			public $pdo;
+		
+		include ("library_class.php");
+		$catg = (int)$_GET['category']; //ricevo in post la categoria richiesta
 
-			public function __construct ($host, $user, $pwd, $dbname){
-				$this->dbname = $dbname;
-				$this->pwd = $pwd;
-				$this->user = $user;
-				$this->host = $host;
-				$this->getInstance();
-			}
+		$dbh = new connessioneDB('localhost', 'root','root','DB_library');	//mi connetto al db
 
-			private function getInstance(){
-				try {
-						$dsn = "mysql:host=$this->host;dbname=$this->dbname;";
-						$opt = [
-   									PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    								PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    								PDO::ATTR_EMULATE_PREPARES   => false,
-								];
-						return $this->pdo = new PDO($dsn, $this->user, $this->pwd, $opt);
-						echo "connesso";
-
-					}
-				catch (PDOException $e) {
-					echo " errore: " .$e->getMessage();
-				}
-
-			}
-		}
-		$catg = (int)$_GET['category'];
-
-		$dbh = new connessione('localhost', 'root','root','DB_library');
-
+		//provo a selezionare la categoria richiesta
 		try {
-					$sel = "SELECT id,title,category,DATE_FORMAT(created_at, '%d-%m-%Y %H:%i:%s')  as data FROM books WHERE category='$catg'";
+					$sel = "SELECT id,title,category,DATE_FORMAT(created_at, '%d-%m-%Y %H:%i:%s')  as data_creazione FROM books WHERE category='$catg'";
 					$sth = $dbh->pdo->prepare($sel);
 					$sth->execute();
 			}
@@ -49,6 +17,7 @@
 		}
 
 
-		$result = $sth->fetchAll();
+		$result = $sth->fetchAll();	 // memorizzo il risultato della query in un array
 
-		echo json_encode($result, JSON_PRETTY_PRINT);
+		echo json_encode($result, JSON_PRETTY_PRINT);	//stampo il json del risultato della query
+?>
